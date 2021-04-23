@@ -1,0 +1,43 @@
+First Bank of Suncoast PEDAC
+
+Problem
+For this assignment, you will be creating your own personal bank account manager. You will be creating an app that will let you track both savings and checking by performing transactions, such as withdrawals, deposits, and transfers. The application will also save your information in a file so you can track your account totals over time.
+
+Rules
+- Stores history of transactions in a SINGLE list.
+- Transaction class supports both checking and savings and deposits and withdraws.
+- Loads past transactions from a file when it first starts.
+- User is be able to see the list of transactions designated savings.
+- User is be able to see the list of transactions designated checking.
+- Never allow withdrawing more money than is available.
+- Transaction amounts are always positive.
+- Has option to make a deposit transaction for savings.
+- Has option to make a deposit transaction for checking.
+- Has option to make a withdraw transaction for savings.
+- Has option to make a withdraw transaction for checking.
+- Has option to see the balance of my savings and checking.
+- After each transaction, writes all the transactions to a file. This is the same file the application loads.
+
+
+
+
+Examples
+
+
+
+Data
+List of transactions
+Transaction class
+- Transaction counter (int)
+- Transaction amount (double)
+- Transaction destination
+Checking amount variable (double)
+Savings amount variable (double)
+
+
+
+Algorithm
+
+
+
+Code

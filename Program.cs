@@ -180,7 +180,7 @@ namespace FirstBankOfSuncoast
                 withdraw.Amount = PromptForDub($"How much are you Withdrawing from your {withdraw.Account} Account?\n");
                 if (withdraw.Amount > aBalance)
                 {
-                    Console.WriteLine($"You can only Withdraw up to {aBalance}");
+                    Console.WriteLine($"You can only Withdraw up to ${aBalance}");
                 }
                 else
                     overDraft = false;

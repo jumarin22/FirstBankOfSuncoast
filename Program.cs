@@ -16,12 +16,12 @@ namespace FirstBankOfSuncoast
             public string Account { get; set; } // Checking or Savings. 
             public string Action { get; set; } // Deposit or Withdraw. 
             public double Amount { get; set; }
-            public DateTime TransactionDate { get; set; } = DateTime.Now;
+            public DateTime TimeStamp { get; set; } = DateTime.Now;
 
             // Methods.
             public string When()
             {
-                return TransactionDate.ToString("yyyy/MM/dd @ HH:mm:ss");
+                return TimeStamp.ToString("yyyy/MM/dd @ HH:mm:ss");
             }
         }
 

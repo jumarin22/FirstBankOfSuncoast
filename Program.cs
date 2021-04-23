@@ -9,51 +9,36 @@ namespace FirstBankOfSuncoast
 {
     class Program
     {
-        class Account
-        {
-            // Properties. 
-            public string Name { get; set; }
-            public double Balance { get; set; }
-
-            // Constructor. 
-            public Account(string name, double balance)
-            {
-                Name = name;
-                Balance = balance;
-            }
-        }
-
         // Transaction class supports both checking and savings ...
         // ... as well as deposits and withdraws.
         class Transaction
         {
             // Properties.
-
             public string Account { get; set; } // Checking or Savings. 
             public string Action { get; set; } // Deposit or Withdraw. 
             public double Amount { get; set; }
-            public string WhenV { get; set; }
-            public double Total { get; set; }
+            public DateTime TransactionDate { get; set; } = DateTime.Now;
 
             // Methods.
             public string When()
             {
-                WhenV = DateTime.Now.ToString();
+                var WhenV = TransactionDate.ToString("yyyy/MM/dd @ HH:mm:ss");
                 return WhenV;
             }
 
             public string Log()
             {
-                string line = $"{Account}, {Amount}, {WhenV}, {Total}";
-                return line;
+                return $"{Account},{Action},{Amount},{When()}";
             }
         }
 
         static void Main(string[] args)
         {
+
             // Creates a stream reader to get information from our file (if empty). 
             TextReader reader;
-            // If the file exists
+
+            // If the file exists.
             if (File.Exists("transactions.csv"))
             {
                 // Assign a StreamReader to read from the file. 
@@ -66,28 +51,17 @@ namespace FirstBankOfSuncoast
             }
             Console.WriteLine("Welcome to First Bank of Suncoast!");
 
-            // Creates a stream reader to get information from our file.
-            var fileReader = new StreamReader("transactions.csv");
-
             // Create a CSV reader to parse the stream into CSV format.
-            var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
             // Get the records from the CSV reader, as `string` and finally as a `List`.
-            var transactions = csvReader.GetRecords<int>().ToList();
-            var transactions2 = new List<string>();
-
-            // Tell the CSV reader not to interpret the first row as a header, otherwise the first number will be skipped.
-            // csvReader.Configuration.HasHeaderRecord = false;
-            // ^ error saying it is read-only.
+            var transactions = csvReader.GetRecords<Transaction>().ToList();
 
             // Close the reader.
-            fileReader.Close();
+            reader.Close();
 
             // Bool to keep running program. 
             var keepRunning = true;
-
-            var checkingAct = new Account("Checking", 0);
-            var savingsAct = new Account("Savings", 0);
 
             while (keepRunning)
             {
@@ -98,19 +72,20 @@ namespace FirstBankOfSuncoast
                 switch (userChoice)
                 {
                     case "d" or "deposit":
-                        Deposit(checkingAct, savingsAct);
+                        transactions.Add(Deposit());
                         break;
                     case "w" or "withdraw":
-                        Withdraw(checkingAct, savingsAct);
+                        transactions.Add(Withdraw(transactions));
                         break;
                     case "b" or "balance":
-                        Balance(checkingAct, savingsAct);
+                        Console.WriteLine($"Checking Account Balance: ${Balance(transactions, "Checking")}");
+                        Console.WriteLine($"$Savings Account Balance: ${Balance(transactions, "Savings")}");
                         break;
                     case "q" or "quit":
                         keepRunning = false;
                         break;
-                    case "s":
-                        Console.WriteLine(transactions2);
+                    default:
+                        Console.WriteLine("Sorry, I didn't understand.");
                         break;
                 }
             }
@@ -121,7 +96,7 @@ namespace FirstBankOfSuncoast
             // Create an object that can write CSV to the fileWriter.
             var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
 
-            // Ask our csvWriter to write out our list of numbers.
+            // Ask our csvWriter to write.
             csvWriter.WriteRecords(transactions);
 
             // Tell the file we are done.
@@ -130,75 +105,28 @@ namespace FirstBankOfSuncoast
             Console.WriteLine("Goodbye!");
         }
 
-        private static void Balance(Account checkingAct, Account savingsAct)
+        private static double Balance(List<Transaction> transactions, string accountType)
         {
-            Console.WriteLine($"Checking Account Balance: {checkingAct.Balance}");
-            Console.WriteLine($"Savings Account Balance: {savingsAct.Balance}");
-        }
-
-        private static void Withdraw(Account checkingAct, Account savingsAct)
-        {
-            Transaction withdraw = new Transaction();
-            string answer = "";
-            bool keepAsking = true;
-            while (keepAsking)
+            var cList = transactions.Where(line => line.Account == accountType).ToList();
+            double aBalance = 0;
+            foreach (var line in cList)
             {
-                answer = PromptForString("Select an account to Withdraw from: (C)hecking or (S)avings?\n").ToLower();
-                if (answer == "c" || answer == "checking")
-                {
-                    withdraw.Account = "Checking";
-                    Console.WriteLine($"Your {withdraw.Account} Account Balance is {checkingAct.Balance}");
-                    keepAsking = false;
-                }
-                else if (answer == "s" || answer.Contains("saving"))
-                {
-                    withdraw.Account = "Savings";
-                    Console.WriteLine($"Your Checking Account Balance is {savingsAct.Balance}");
-                    keepAsking = false;
-                }
-                else
-                    Console.WriteLine("Sorry, I don't understand.");
+                if (line.Action == "Deposit")
+                    aBalance += line.Amount;
+                else if (line.Action == "Withdraw")
+                    aBalance -= line.Amount;
             }
 
-            var overDraft = true;
-            while (overDraft)
-            {
-                withdraw.Amount = PromptForDub($"How much are you Withdrawing from your {withdraw.Account.ToString()} account?\n");
-                if (withdraw.Account == "Checking")
-                {
-                    if (checkingAct.Balance - withdraw.Amount < 0)
-                    {
-                        Console.WriteLine($"You can only withdraw up to {checkingAct.Balance}");
-                    }
-                    else
-                    {
-                        checkingAct.Balance -= withdraw.Amount;
-                        withdraw.Total = checkingAct.Balance;
-                        overDraft = false;
-                    }
-                }
-                else if (withdraw.Account == "Savings")
-                {
-                    if (savingsAct.Balance - withdraw.Amount < 0)
-                    {
-                        Console.WriteLine($"You can only withdraw up to {savingsAct.Balance}");
-                    }
-                    else
-                    {
-                        savingsAct.Balance -= withdraw.Amount;
-                        withdraw.Total = savingsAct.Balance;
-                        overDraft = false;
-                    }
-                }
-            }
+            return aBalance;
 
-            Console.WriteLine($"You Withdrew {withdraw.Amount} in your {withdraw.Account} Account on {withdraw.When()}");
-            Console.WriteLine(withdraw.Log());
+            // Console.WriteLine($"Checking Account Balance: ${cBalance}");
+            // Console.WriteLine($"Savings Account Balance: ${sBalance}");
         }
 
-        private static void Deposit(Account checkingAct, Account savingsAct)
+        private static Transaction Deposit()
         {
             Transaction deposit = new Transaction();
+            deposit.Action = "Deposit";
             string answer = "";
             bool keepAsking = true;
             while (keepAsking)
@@ -218,21 +146,55 @@ namespace FirstBankOfSuncoast
                     Console.WriteLine("Sorry, I don't understand.");
             }
 
-            deposit.Amount = PromptForDub($"How much are you Despositing in your {deposit.Account.ToString()} account?\n");
-
-            if (deposit.Account == "Checking")
-            {
-                checkingAct.Balance += deposit.Amount;
-                deposit.Total = checkingAct.Balance;
-            }
-            else if (deposit.Account == "Savings")
-            {
-                savingsAct.Balance += deposit.Amount;
-                deposit.Total = savingsAct.Balance;
-            }
+            deposit.Amount = PromptForDub($"How much are you Despositing in your {deposit.Account} Account?\n");
 
             Console.WriteLine($"You Deposited {deposit.Amount} in your {deposit.Account} Account on {deposit.When()}");
-            Console.WriteLine(deposit.Log());
+
+            return deposit;
+        }
+
+        private static Transaction Withdraw(List<Transaction> transactions)
+        {
+            Transaction withdraw = new Transaction();
+            withdraw.Action = "Withdraw";
+            string answer = "";
+            bool keepAsking = true;
+            while (keepAsking)
+            {
+                answer = PromptForString("Select an Account to Withdraw from: (C)hecking or (S)avings?\n").ToLower();
+                if (answer == "c" || answer == "checking")
+                {
+                    withdraw.Account = "Checking";
+                    Console.WriteLine($"Your {withdraw.Account} Account Balance is ... ");
+                    keepAsking = false;
+                }
+                else if (answer == "s" || answer.Contains("saving"))
+                {
+                    withdraw.Account = "Savings";
+                    Console.WriteLine($"Your {withdraw.Account} Account Balance is ... ");
+                    keepAsking = false;
+                }
+                else
+                    Console.WriteLine("Sorry, I don't understand.");
+            }
+
+            double aBalance = Balance(transactions, withdraw.Account);
+
+            bool overDraft = true;
+            while (overDraft)
+            {
+                withdraw.Amount = PromptForDub($"How much are you Withdrawing from your {withdraw.Account} Account?\n");
+                if (withdraw.Amount > aBalance)
+                {
+                    Console.WriteLine($"You can only Withdraw up to {aBalance}");
+                }
+                else
+                    overDraft = false;
+            }
+
+            Console.WriteLine($"You Withdrew {withdraw.Amount} from your {withdraw.Account} Account on {withdraw.When()}");
+
+            return withdraw;
         }
 
         private static double PromptForDub(string prompt)

@@ -1,15 +1,5 @@
-1
-2
-3
-8675309
-1
-2
-3
-8675309
-1
-2
-3
-8675309
-1
-2
-3
+Account,Action,Amount,TransactionDate
+Checking,Deposit,100,04/23/2021 12:38:00
+Savings,Deposit,200,04/23/2021 12:38:05
+Checking,Withdraw,5,04/23/2021 12:38:17
+Savings,Withdraw,50,04/23/2021 12:38:30

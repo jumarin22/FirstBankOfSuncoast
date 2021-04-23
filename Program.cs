@@ -143,11 +143,11 @@ namespace FirstBankOfSuncoast
             bool keepAsking = true;
             while (keepAsking)
             {
-                answer = PromptForString("From which Account would you like to make a Withdrawal: (C)hecking or (S)avings?\n").ToLower();
+                answer = PromptForString("Select an account to Withdraw from: (C)hecking or (S)avings?\n").ToLower();
                 if (answer == "c" || answer == "checking")
                 {
                     withdraw.Account = "Checking";
-                    Console.WriteLine($"Your Checking Account Balance is {checkingAct.Balance}");
+                    Console.WriteLine($"Your {withdraw.Account} Account Balance is {checkingAct.Balance}");
                     keepAsking = false;
                 }
                 else if (answer == "s" || answer.Contains("saving"))

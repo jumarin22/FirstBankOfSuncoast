@@ -21,7 +21,6 @@ namespace FirstBankOfSuncoast
                 Name = name;
                 Balance = balance;
             }
-
         }
 
         // Transaction class supports both checking and savings ...
@@ -48,7 +47,6 @@ namespace FirstBankOfSuncoast
                 string line = $"{Account}, {Amount}, {WhenV}, {Total}";
                 return line;
             }
-
         }
 
         static void Main(string[] args)
@@ -170,7 +168,7 @@ namespace FirstBankOfSuncoast
                 {
                     if (checkingAct.Balance - withdraw.Amount < 0)
                     {
-                        Console.WriteLine($"You can only withdraw up {checkingAct.Balance}");
+                        Console.WriteLine($"You can only withdraw up to {checkingAct.Balance}");
                     }
                     else
                     {
@@ -183,7 +181,7 @@ namespace FirstBankOfSuncoast
                 {
                     if (savingsAct.Balance - withdraw.Amount < 0)
                     {
-                        Console.WriteLine($"You can only withdraw up {savingsAct.Balance}");
+                        Console.WriteLine($"You can only withdraw up to {savingsAct.Balance}");
                     }
                     else
                     {
@@ -241,7 +239,13 @@ namespace FirstBankOfSuncoast
         {
             Console.Write(prompt);
             var userInput = Console.ReadLine();
-            return int.Parse(userInput);
+            var numberInput = double.Parse(userInput);
+            if (numberInput < 0)
+            {
+                Console.WriteLine("Only positive amounts allowed. Taking the absolute value.");
+                numberInput = Math.Abs(numberInput);
+            }
+            return numberInput;
         }
 
         private static string PromptForString(string prompt)

@@ -33,21 +33,19 @@ namespace FirstBankOfSuncoast
             public string Account { get; set; } // Checking or Savings. 
             public string Action { get; set; } // Deposit or Withdraw. 
             public double Amount { get; set; }
-            public string Whenv { get; set; }
-            public double ChkTotal { get; set; }
-            public double SavTotal { get; set; }
-
+            public string WhenV { get; set; }
+            public double Total { get; set; }
 
             // Methods.
             public string When()
             {
-                Whenv = DateTime.Now.ToString();
-                return Whenv;
+                WhenV = DateTime.Now.ToString();
+                return WhenV;
             }
 
             public string Log()
             {
-                string line = $"{Account}, {Amount}, {Whenv}";
+                string line = $"{Account}, {Amount}, {WhenV}, {Total}";
                 return line;
             }
 
@@ -147,7 +145,7 @@ namespace FirstBankOfSuncoast
             bool keepAsking = true;
             while (keepAsking)
             {
-                answer = PromptForString("In which Account would you like to make a Withdrawal: (C)hecking or (S)avings?\n").ToLower();
+                answer = PromptForString("From which Account would you like to make a Withdrawal: (C)hecking or (S)avings?\n").ToLower();
                 if (answer == "c" || answer == "checking")
                 {
                     withdraw.Account = "Checking";
@@ -165,7 +163,6 @@ namespace FirstBankOfSuncoast
             }
 
             var overDraft = true;
-
             while (overDraft)
             {
                 withdraw.Amount = PromptForDub($"How much are you Withdrawing from your {withdraw.Account.ToString()} account?\n");
@@ -178,6 +175,7 @@ namespace FirstBankOfSuncoast
                     else
                     {
                         checkingAct.Balance -= withdraw.Amount;
+                        withdraw.Total = checkingAct.Balance;
                         overDraft = false;
                     }
                 }
@@ -190,6 +188,7 @@ namespace FirstBankOfSuncoast
                     else
                     {
                         savingsAct.Balance -= withdraw.Amount;
+                        withdraw.Total = savingsAct.Balance;
                         overDraft = false;
                     }
                 }
@@ -224,9 +223,15 @@ namespace FirstBankOfSuncoast
             deposit.Amount = PromptForDub($"How much are you Despositing in your {deposit.Account.ToString()} account?\n");
 
             if (deposit.Account == "Checking")
+            {
                 checkingAct.Balance += deposit.Amount;
+                deposit.Total = checkingAct.Balance;
+            }
             else if (deposit.Account == "Savings")
+            {
                 savingsAct.Balance += deposit.Amount;
+                deposit.Total = savingsAct.Balance;
+            }
 
             Console.WriteLine($"You Deposited {deposit.Amount} in your {deposit.Account} Account on {deposit.When()}");
             Console.WriteLine(deposit.Log());

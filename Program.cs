@@ -173,7 +173,7 @@ namespace FirstBankOfSuncoast
             Console.WriteLine($"Your {withdraw.Account} Account Balance is ${aBalance}");
             if (aBalance == 0)
             {
-                Console.WriteLine("You cannot Withdraw from an account with no money!");
+                Console.WriteLine("You cannot Withdraw from an Account of 0 value!");
                 return withdraw; // This should probably be Try/catch exception thingie. 
             }
 

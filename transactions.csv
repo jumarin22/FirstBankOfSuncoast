@@ -1,0 +1,5 @@
+Account,Action,Amount,TimeStamp
+Checking,Deposit,100,04/23/2021 15:11:51
+Checking,Withdraw,50,04/23/2021 15:11:55
+Savings,Withdraw,0,04/23/2021 15:12:08
+Savings,Deposit,200,04/23/2021 15:12:14

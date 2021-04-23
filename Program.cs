@@ -9,8 +9,7 @@ namespace FirstBankOfSuncoast
 {
     class Program
     {
-        // Transaction class supports both checking and savings ...
-        // ... as well as deposits and withdraws.
+        // Transaction class supports both checking and savings, and deposits and withdraws.
         class Transaction
         {
             // Properties.
@@ -24,11 +23,6 @@ namespace FirstBankOfSuncoast
             {
                 var WhenV = TransactionDate.ToString("yyyy/MM/dd @ HH:mm:ss");
                 return WhenV;
-            }
-
-            public string Log()
-            {
-                return $"{Account},{Action},{Amount},{When()}";
             }
         }
 

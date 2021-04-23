@@ -1,6 +1,0 @@
-Account,Action,Amount,TransactionDate
-Checking,Deposit,100,04/23/2021 12:38:00
-Savings,Deposit,200,04/23/2021 12:38:05
-Checking,Withdraw,5,04/23/2021 12:38:17
-Savings,Withdraw,50,04/23/2021 12:38:30
-Checking,Deposit,300,04/23/2021 12:52:26

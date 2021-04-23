@@ -149,6 +149,7 @@ namespace FirstBankOfSuncoast
         {
             Transaction withdraw = new Transaction();
             withdraw.Action = "Withdraw";
+            double aBalance = Balance(transactions, withdraw.Account); // Run Balance check to avoid overDraft.
             string answer = "";
             bool keepAsking = true;
             while (keepAsking)
@@ -157,20 +158,18 @@ namespace FirstBankOfSuncoast
                 if (answer == "c" || answer == "checking")
                 {
                     withdraw.Account = "Checking";
-                    Console.WriteLine($"Your {withdraw.Account} Account Balance is ... ");
+                    Console.WriteLine($"Your {withdraw.Account} Account Balance is {aBalance}");
                     keepAsking = false;
                 }
                 else if (answer == "s" || answer.Contains("saving"))
                 {
                     withdraw.Account = "Savings";
-                    Console.WriteLine($"Your {withdraw.Account} Account Balance is ... ");
+                    Console.WriteLine($"Your {withdraw.Account} Account Balance is {aBalance} ");
                     keepAsking = false;
                 }
                 else
                     Console.WriteLine("Sorry, I don't understand.");
             }
-
-            double aBalance = Balance(transactions, withdraw.Account); // Run Balance check to avoid overDraft. 
 
             bool overDraft = true;
             while (overDraft)

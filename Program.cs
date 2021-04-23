@@ -149,7 +149,7 @@ namespace FirstBankOfSuncoast
         {
             Transaction withdraw = new Transaction();
             withdraw.Action = "Withdraw";
-            double aBalance = Balance(transactions, withdraw.Account); // Run Balance check to avoid overDraft.
+            double aBalance = 0; // Create temporary balance amount. 
             string answer = "";
             bool keepAsking = true;
             while (keepAsking)
@@ -158,17 +158,23 @@ namespace FirstBankOfSuncoast
                 if (answer == "c" || answer == "checking")
                 {
                     withdraw.Account = "Checking";
-                    Console.WriteLine($"Your {withdraw.Account} Account Balance is {aBalance}");
                     keepAsking = false;
                 }
                 else if (answer == "s" || answer.Contains("saving"))
                 {
                     withdraw.Account = "Savings";
-                    Console.WriteLine($"Your {withdraw.Account} Account Balance is {aBalance} ");
                     keepAsking = false;
                 }
                 else
                     Console.WriteLine("Sorry, I don't understand.");
+            }
+
+            aBalance = Balance(transactions, withdraw.Account); // Run Balance check to avoid overDraft.
+            Console.WriteLine($"Your {withdraw.Account} Account Balance is ${aBalance}");
+            if (aBalance == 0)
+            {
+                Console.WriteLine("You cannot Withdraw from an account with no money!");
+                return withdraw; // This should probably be Try/catch exception thingie. 
             }
 
             bool overDraft = true;

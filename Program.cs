@@ -21,8 +21,7 @@ namespace FirstBankOfSuncoast
             // Methods.
             public string When()
             {
-                var WhenV = TransactionDate.ToString("yyyy/MM/dd @ HH:mm:ss");
-                return WhenV;
+                return TransactionDate.ToString("yyyy/MM/dd @ HH:mm:ss");
             }
         }
 
@@ -57,6 +56,7 @@ namespace FirstBankOfSuncoast
             // Bool to keep running program. 
             var keepRunning = true;
 
+            // Main interface.
             while (keepRunning)
             {
                 Console.WriteLine("What would you like to do?");
@@ -101,8 +101,9 @@ namespace FirstBankOfSuncoast
 
         private static double Balance(List<Transaction> transactions, string accountType)
         {
+            // Pull objects from List filtered by Transaction.Account result.
             var cList = transactions.Where(line => line.Account == accountType).ToList();
-            double aBalance = 0;
+            double aBalance = 0; // Create temporary balance sum. 
             foreach (var line in cList)
             {
                 if (line.Action == "Deposit")
@@ -112,9 +113,6 @@ namespace FirstBankOfSuncoast
             }
 
             return aBalance;
-
-            // Console.WriteLine($"Checking Account Balance: ${cBalance}");
-            // Console.WriteLine($"Savings Account Balance: ${sBalance}");
         }
 
         private static Transaction Deposit()
@@ -142,7 +140,7 @@ namespace FirstBankOfSuncoast
 
             deposit.Amount = PromptForDub($"How much are you Despositing in your {deposit.Account} Account?\n");
 
-            Console.WriteLine($"You Deposited {deposit.Amount} in your {deposit.Account} Account on {deposit.When()}");
+            Console.WriteLine($"You Deposited ${deposit.Amount} in your {deposit.Account} Account on {deposit.When()}");
 
             return deposit;
         }
@@ -172,7 +170,7 @@ namespace FirstBankOfSuncoast
                     Console.WriteLine("Sorry, I don't understand.");
             }
 
-            double aBalance = Balance(transactions, withdraw.Account);
+            double aBalance = Balance(transactions, withdraw.Account); // Run Balance check to avoid overDraft. 
 
             bool overDraft = true;
             while (overDraft)
@@ -191,20 +189,20 @@ namespace FirstBankOfSuncoast
             return withdraw;
         }
 
-        private static double PromptForDub(string prompt)
+        private static double PromptForDub(string prompt) // Method when asking for numbers. 
         {
             Console.Write(prompt);
             var userInput = Console.ReadLine();
             var numberInput = double.Parse(userInput);
             if (numberInput < 0)
             {
-                Console.WriteLine("Only positive amounts allowed. Taking the absolute value.");
+                Console.WriteLine("Only positive amounts allowed. Taking the absolute value."); // Do not allow negative numbers. 
                 numberInput = Math.Abs(numberInput);
             }
             return numberInput;
         }
 
-        private static string PromptForString(string prompt)
+        private static string PromptForString(string prompt) // Method when asking for strings. 
         {
             Console.Write(prompt);
             var userInput = Console.ReadLine();

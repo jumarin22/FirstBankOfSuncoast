@@ -104,8 +104,8 @@ namespace FirstBankOfSuncoast
 
         private static void History(List<Transaction> transactions)
         {
-            var answer = PromptForString("For which Account would you like to view the History?\n").ToLower();
-            Console.WriteLine("(C)hecking, (S)avings");
+            Console.WriteLine("For which Account would you like to view the History?");
+            var answer = PromptForString("(C)hecking, (S)avings \n").ToLower();
 
             if (answer == "c" || answer == "checking")
             {

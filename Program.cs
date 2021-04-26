@@ -60,7 +60,7 @@ namespace FirstBankOfSuncoast
             while (keepRunning)
             {
                 Console.WriteLine("What would you like to do?");
-                Console.WriteLine("(D)eposit \n(W)ithdraw \n(B)alance  \n(H)istory  \n(T)ransfer  \n(Q)uit");
+                Console.WriteLine("(D)eposit \n(W)ithdraw \n(B)alance \n(H)istory \n(T)ransfer \n(Q)uit");
                 var userChoice = Console.ReadLine().ToLower();
 
                 switch (userChoice)
@@ -132,18 +132,20 @@ namespace FirstBankOfSuncoast
             while (keepAsking)
             {
                 answer = PromptForString("In which Account would you like to make a Deposit: (C)hecking or (S)avings?\n").ToLower();
-                if (answer == "c" || answer == "checking")
+                switch (answer)
                 {
-                    deposit.Account = "Checking";
-                    keepAsking = false;
+                    case "c" or "checking":
+                        deposit.Account = "Checking";
+                        keepAsking = false;
+                        break;
+                    case "s" or "savings":
+                        deposit.Account = "Savings";
+                        keepAsking = false;
+                        break;
+                    default:
+                        Console.WriteLine("Sorry, I don't understand.");
+                        break;
                 }
-                else if (answer == "s" || answer.Contains("saving"))
-                {
-                    deposit.Account = "Savings";
-                    keepAsking = false;
-                }
-                else
-                    Console.WriteLine("Sorry, I don't understand.");
             }
 
             deposit.Amount = PromptForDub($"How much are you Despositing in your {deposit.Account} Account?\n");

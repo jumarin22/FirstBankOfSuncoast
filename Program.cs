@@ -47,7 +47,7 @@ namespace FirstBankOfSuncoast
             // Create a CSV reader to parse the stream into CSV format.
             var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-            // Get the records from the CSV reader, as `string` and finally as a `List`.
+            // Get the records from the CSV reader.
             var transactions = csvReader.GetRecords<Transaction>().ToList();
 
             // Close the reader.
@@ -237,8 +237,9 @@ namespace FirstBankOfSuncoast
                     Console.WriteLine("Sorry, I don't understand.");
             }
         }
+
         // Adventure Mode: Add the ability to transfer funds from my checking to my saving (and vice versa).
-        // Creates 2 transactions, one Withdraw() then one Deposit(). 
+        // Creates 2 transactions, one Withdraw(account) then one Deposit(otherAccount). 
         // Repeats most code from Withdraw(), then Deposits() same amount in other Account. Suffers from wet code. 
         private static void Transfer(List<Transaction> transactions)
         {

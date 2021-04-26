@@ -60,7 +60,7 @@ namespace FirstBankOfSuncoast
             while (keepRunning)
             {
                 Console.WriteLine("What would you like to do?");
-                Console.WriteLine("(D)eposit, (W)ithdraw, (B)alance, (Q)uit");
+                Console.WriteLine("(D)eposit, (W)ithdraw, (B)alance, (H)istory, (Q)uit");
                 var userChoice = Console.ReadLine().ToLower();
 
                 switch (userChoice)
@@ -74,6 +74,9 @@ namespace FirstBankOfSuncoast
                     case "b" or "balance":
                         Console.WriteLine($"Checking Account Balance: ${Balance(transactions, "Checking")}");
                         Console.WriteLine($"$Savings Account Balance: ${Balance(transactions, "Savings")}");
+                        break;
+                    case "h" or "history":
+                        History(transactions);
                         break;
                     case "q" or "quit":
                         keepRunning = false;
@@ -97,6 +100,30 @@ namespace FirstBankOfSuncoast
             fileWriter.Close();
 
             Console.WriteLine("Goodbye!");
+        }
+
+        private static void History(List<Transaction> transactions)
+        {
+            var answer = PromptForString("For which Account would you like to view the History?\n").ToLower();
+            Console.WriteLine("(C)hecking, (S)avings");
+
+            if (answer == "c" || answer == "checking")
+            {
+                foreach (var line in transactions)
+                {
+                    if (line.Account == "Checking")
+                        Console.WriteLine($"{line.Account}, {line.Action}, {line.Amount}, {line.TimeStamp}");
+                }
+            }
+
+            else if (answer == "s" || answer == "savings")
+            {
+                foreach (var line in transactions)
+                {
+                    if (line.Account == "Savings")
+                        Console.WriteLine($"{line.Account}, {line.Action}, {line.Amount}, {line.TimeStamp}");
+                }
+            }
         }
 
         private static double Balance(List<Transaction> transactions, string accountType)

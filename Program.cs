@@ -223,7 +223,7 @@ namespace FirstBankOfSuncoast
                     keepAsking = false;
                 }
 
-                else if (answer == "s" || answer == "savings")
+                else if (answer == "s" || answer.Contains("saving"))
                 {
                     foreach (var line in transactions)
                     {

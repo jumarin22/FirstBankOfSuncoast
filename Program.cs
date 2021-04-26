@@ -104,25 +104,35 @@ namespace FirstBankOfSuncoast
 
         private static void History(List<Transaction> transactions)
         {
-            Console.WriteLine("For which Account would you like to view the History?");
-            var answer = PromptForString("(C)hecking, (S)avings \n").ToLower();
+            var answer = "";
+            bool keepAsking = true;
 
-            if (answer == "c" || answer == "checking")
+            while (keepAsking)
             {
-                foreach (var line in transactions)
+                Console.WriteLine("For which Account would you like to view the History?");
+                answer = PromptForString("(C)hecking, (S)avings \n").ToLower();
+                if (answer == "c" || answer == "checking")
                 {
-                    if (line.Account == "Checking")
-                        Console.WriteLine($"{line.Account}, {line.Action}, {line.Amount}, {line.TimeStamp}");
+                    foreach (var line in transactions)
+                    {
+                        if (line.Account == "Checking")
+                            Console.WriteLine($"{line.Account}, {line.Action}, {line.Amount}, {line.TimeStamp}");
+                    }
+                    keepAsking = false;
                 }
-            }
 
-            else if (answer == "s" || answer == "savings")
-            {
-                foreach (var line in transactions)
+                else if (answer == "s" || answer == "savings")
                 {
-                    if (line.Account == "Savings")
-                        Console.WriteLine($"{line.Account}, {line.Action}, {line.Amount}, {line.TimeStamp}");
+                    foreach (var line in transactions)
+                    {
+                        if (line.Account == "Savings")
+                            Console.WriteLine($"{line.Account}, {line.Action}, {line.Amount}, {line.TimeStamp}");
+                    }
+                    keepAsking = false;
                 }
+
+                else
+                    Console.WriteLine("Sorry, I don't understand.");
             }
         }
 

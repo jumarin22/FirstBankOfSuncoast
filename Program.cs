@@ -282,7 +282,7 @@ namespace FirstBankOfSuncoast
                 transferW.Amount = PromptForDub($"How much are you Transferring from your {transferW.Account} Account to your {transferD.Account}?\n");
                 if (transferW.Amount > aBalance)
                 {
-                    Console.WriteLine($"You can only Withdraw up to ${aBalance}");
+                    Console.WriteLine($"You can only Transfer up to ${aBalance}");
                 }
                 else
                     overDraft = false;

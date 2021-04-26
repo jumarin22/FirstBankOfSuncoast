@@ -105,6 +105,7 @@ namespace FirstBankOfSuncoast
             Console.WriteLine("Goodbye!");
         }
 
+        // Method to check Balance of an Account.
         private static double Balance(List<Transaction> transactions, string accountType)
         {
             // Pull objects from List filtered by Transaction.Account result.
@@ -177,7 +178,6 @@ namespace FirstBankOfSuncoast
                     Console.WriteLine("Sorry, I don't understand.");
             }
 
-            // Method to check Balance of an Account.
             aBalance = Balance(transactions, withdraw.Account); // Run Balance check to avoid overDraft.
             Console.WriteLine($"Your {withdraw.Account} Account Balance is ${aBalance}");
             if (aBalance == 0)
